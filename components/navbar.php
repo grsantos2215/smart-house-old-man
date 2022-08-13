@@ -5,8 +5,9 @@
 				<img src="assets/img/header/user.png" alt="">
 			</div>
 			<div class="col-9 m-auto">
-				<h5 class="fw-bold">Olá Nathan</h5>
+				<h5 class="fw-bold" id="nome">Olá Nathan</h5>
 				<p class="m-0 p-0">Tudo está ótimo em casa hoje</p>
+				<div id="myClock"></div>
 			</div>
 		</div>
 	</div>

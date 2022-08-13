@@ -1,0 +1,29 @@
+#myClock:draw {
+	var: clockTime new Date().toLocaleTimeString() every 1s;
+	render: "Time {{clockTime}}";
+}
+
+a:not(.outsideLink):not([target="_blank"]):click, form:not(.outsideLink):submit {
+    prevent-default: true;
+}
+
+@pages {
+	"/smart-house-old-man/": data-title="Home" data-ajax="/smart-house-old-man/components/html/index.php?v={$RAND}" class="myPage";
+	"/smart-house-old-man/index.php": data-title="Home" data-ajax="/smart-house-old-man/components/html/index.php?v={$RAND}" class="myPage";
+	"/smart-house-old-man/configuracoes.php": data-title="Configurações" data-ajax="/smart-house-old-man/components/html/configuracoes.php?v={$RAND}" class="myPage";
+}
+
+.myPage:click {
+    url-change: "{@href}" "{@data-title}";
+    ajax: "{@data-ajax}" get html;
+}
+
+.myPage:mouseover {
+    ajax-pre-get: "{@data-ajax}" get html;
+}
+
+.myPage:afterAjax {
+    #content {
+        render: {$STRING};
+    }
+}
