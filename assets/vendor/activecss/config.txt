@@ -8,8 +8,8 @@ a:not(.outsideLink):not([target="_blank"]):click, form:not(.outsideLink):submit 
 }
 
 @pages {
-	"/smart-house-old-man/": data-title="Home" data-ajax="/smart-house-old-man/components/html/index.php?v={$RAND}" class="myPage";
-	"/smart-house-old-man/index.php": data-title="Home" data-ajax="/smart-house-old-man/components/html/index.php?v={$RAND}" class="myPage";
+	"/smart-house-old-man/": data-title="Home" data-ajax="/smart-house-old-man/components/html/index.php?v={$RAND}" class="myPage home";
+	"/smart-house-old-man/index.php": data-title="Home" data-ajax="/smart-house-old-man/components/html/index.php?v={$RAND}" class="myPage home";
 	"/smart-house-old-man/configuracoes.php": data-title="Configurações" data-ajax="/smart-house-old-man/components/html/configuracoes.php?v={$RAND}" class="myPage";
 }
 
@@ -25,5 +25,27 @@ a:not(.outsideLink):not([target="_blank"]):click, form:not(.outsideLink):submit 
 .myPage:afterAjax {
     #content {
         render: {$STRING};
+    }
+}
+
+.home:afterAjax{
+    ajax: "/smart-house-old-man/assets/js/current.json" get json await;
+    console-log: {JSON};
+    #content{
+        render: "<weather-element></weather-element>";
+    }
+}
+
+body:preInit {
+    ajax: "/smart-house-old-man/assets/js/current.json" get json await;
+    console-log: {JSON};
+    #content{
+        render: "<weather-element></weather-element>";
+    }
+}
+
+@component weather-element {
+    html {
+        <p>{JSON.request.type}</p>
     }
 }

@@ -8,7 +8,7 @@ window.addEventListener('load', async () => {
 });
 
 const fetchWeather = async () => {
-    const request = new Request(`assets/js/current.json`);
+    const request = new Request(`assets/php/request.php`);
 
     const res = await fetch(request);
 
@@ -18,12 +18,12 @@ const fetchWeather = async () => {
 
     weather = json;
 
-    console.log(weather);
+    // console.log(weather);
     renderWeather();
 };
 
 const renderWeather = () => {
-    console.log(weather);
+    // console.log(weather);
     let weatherHTML = `<div class="row">`;
 
     const weatherTemplate = `

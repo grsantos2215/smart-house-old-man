@@ -1,7 +1,7 @@
 <nav class="navbar">
 	<ul class="navbar-nav">
 		<li class="logo">
-			<a href="/smart-house-old-man/index.php" class="nav-link index">
+			<a href="/smart-house-old-man/" class="nav-link index">
 				<span class="link-text logo-text">Fireship</span>
 				<svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="angle-double-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-angle-double-right fa-w-14 fa-5x">
 					<g class="fa-group">

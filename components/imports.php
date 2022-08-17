@@ -4,4 +4,4 @@
 
 <!-- <script defer src="assets/js/weather.api.js"></script> -->
 <script defer src="assets/js/script.js"></script>
-<script type="module" src="assets/js/weather.js"></script>
+<!-- <script type="module" src="assets/js/weather.js"></script> -->
