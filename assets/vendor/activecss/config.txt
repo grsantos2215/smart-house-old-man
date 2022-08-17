@@ -29,8 +29,7 @@ a:not(.outsideLink):not([target="_blank"]):click, form:not(.outsideLink):submit 
 }
 
 .home:afterAjax{
-    ajax: "/smart-house-old-man/assets/js/current.json" get json await;
-    console-log: {JSON};
+    
     #content{
         render: "<weather-element></weather-element>";
     }
@@ -46,6 +45,14 @@ body:preInit {
 
 @component weather-element {
     html {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="border p-3 rounded-2 w-100">
+                    <h5 class="card-title">Temperatura</h5>
+                    <p class="card-text">{JSON.current.temperature}ºC</p>
+                </div>
+            </div>
+        </div>
         <p>{JSON.request.type}</p>
     }
 }

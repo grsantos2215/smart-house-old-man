@@ -42,6 +42,7 @@ main {
     padding: 0 !important;
     display: block !important;
     /* overflow: scroll !important; */
+    z-index: 1 !important;
 }
 
 .navbar-nav {
@@ -206,4 +207,8 @@ main {
 
 .light #lightIcon {
     display: block !important;
+}
+
+.bg-transparent {
+    background-color: transparent !important;
 }

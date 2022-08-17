@@ -13,7 +13,7 @@
 	</div>
 
 	<div class="col-md-6 m-auto text-end d-md-block d-none">
-		<p class="p-0 m-0"><?php echo $date ?></p>
-		<p class="p-0 m-0 fw-bold"><?php echo $day ?></p>
+		<p class="p-0 m-0 fw-bold"><?php echo $date ?></p>
+		<p class="p-0 m-0"><?php echo $day ?></p>
 	</div>
 </div>
