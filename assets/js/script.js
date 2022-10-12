@@ -17,9 +17,3 @@ function toggleTheme() {
 }
 
 document.getElementById('themeButton').onclick = toggleTheme;
-
-document.addEventListener('DOMContentLoaded', function (e) {
-    ActiveCSS.init({
-        configLocation: 'assets/vendor/activecss/config.txt',
-    });
-});
