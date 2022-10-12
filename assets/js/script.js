@@ -1,3 +1,4 @@
+var tmp;
 const themeMap = {
     dark: 'light',
     light: 'dark',

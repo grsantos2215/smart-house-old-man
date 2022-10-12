@@ -3,5 +3,5 @@
 <script src="assets/vendor/activecss/activecss-2-10-0.min.js"></script>
 
 <!-- <script defer src="assets/js/weather.api.js"></script> -->
-<script defer src="assets/js/script.js"></script>
+<script type="module" src="assets/js/script.js"></script>
 <!-- <script type="module" src="assets/js/weather.js"></script> -->
