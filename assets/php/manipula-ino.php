@@ -3,7 +3,9 @@
 
 // $comunicacao1 = new INTERFACEARDUINO;
 
-$conexaoArduino = fopen("COM3", "w");
+exec("mode COM3 BAUD=115200 PARITY=N data=8 stop=1 xon=off");
+
+$conexaoArduino = fopen("COM3:", "w");
 
 if (isset($_POST["btLiga"])) {
 	fwrite($conexaoArduino, "1");
