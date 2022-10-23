@@ -10,13 +10,13 @@ if ($_POST) {
 
 	if ($tipo_conexao == "localhost" || $tipo_conexao == "127.0.0.1") {
 		$ds = "";
-		$pastaLocal = "../lib/face-api/labels/$nomePessoa"
+		$pastaLocal = "../lib/face-api/labels/$nomePessoa/";
 	}
 
 	if (!is_dir($pastaLocal)) {
 
 		$oldmask = umask(000); //it will set the new umask and returns the old one 
-		mkdir($pastaLocal, 777);
+		mkdir($pastaLocal);
 		umask($oldmask); //reset the old umask
 	}
 }
