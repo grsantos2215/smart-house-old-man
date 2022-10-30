@@ -88,10 +88,13 @@ main {
     margin-left: 1rem !important;
 }
 
+.nav-link i,
 .nav-link svg {
     width: 2rem !important;
+    font-size: 2rem !important;
     min-width: 2rem !important;
     margin: 0 1.5rem !important;
+    text-align: center;
 }
 
 .fa-primary {
@@ -132,6 +135,7 @@ main {
 }
 
 .navbar:hover .logo svg {
+    opacity: 0;
     transform: rotate(-180deg) !important;
 }
 
@@ -279,4 +283,8 @@ main {
     top: 2px;
     right: -14px;
     background: #d94c4c;
+}
+
+.virgula:last-child {
+    display: none;
 }

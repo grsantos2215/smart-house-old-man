@@ -48,8 +48,14 @@
 						<div class="col-md-3 col-sm-6 my-2">
 							<div class="border d-flex flex-column align-items-center justify-content-center h-100 p-3 rounded-2 w-100">
 								<h5 class="fw-bold m-0 p-0"><?= $dir[$i]; ?></h5>
-								<div class="d-grid gap-2 mt-3">
-									<a class="btn btn-primary" href="adiciona-fotos.php?pessoa=<?= base64_encode($dir[$i]) ?>">Adicionar fotos</a>
+								<div class="d-grid gap-2 w-100 mt-3">
+									<a class="btn btn-primary" href="adiciona-fotos.php?p=<?= base64_encode($dir[$i]) ?>">Visualizar</a>
+									<form class="remove-pessoa">
+										<input type="hidden" value="../lib/face-api/labels/<?= $dir[$i] ?>/" name="diretorio">
+										<div class="d-grid gap-0 w-100 mt-3">
+											<button type="submit" class="btn btn-outline-danger">Excluir acesso</button>
+										</div>
+									</form>
 								</div>
 							</div>
 						</div>
@@ -87,6 +93,14 @@
 
 	<script>
 		$(function() {
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn m-1 btn-success',
+					cancelButton: 'btn m-1 btn-danger'
+				},
+				buttonsStyling: false
+			})
+
 			$("#adiciona-pessoa").on("submit", (e) => {
 				e.preventDefault();
 				$.ajax({
@@ -94,9 +108,65 @@
 					type: "POST",
 					data: $("#adiciona-pessoa").serialize(),
 					success: function(data) {
-						console.log(data);
+						swalWithBootstrapButtons.fire({
+							title: 'Sucesso',
+							text: 'Acesso adicionada com sucesso',
+							icon: 'success',
+							allowOutsideClick: false,
+							allowEscapeKey: false,
+						}).then(() => {
+							location.reload();
+						})
 					}
 				})
+			})
+
+			$(".remove-pessoa").on("submit", (e) => {
+				e.preventDefault();
+
+				swalWithBootstrapButtons.fire({
+					title: "Tem Certeza?",
+					icon: "warning",
+					text: "Tem certeza que deseja excluir este acesso? Essa ação não terá recuperação",
+					allowOutsideClick: false,
+					allowEscapeKey: false,
+					showCancelButton: true,
+					reverseButtons: true,
+					confirmButtonText: 'Sim, Quero excluir',
+					cancelButtonText: 'Cancelar',
+				}).then((r) => {
+					if (r.isConfirmed) {
+						$.ajax({
+							url: "assets/php/remove-pessoa.php",
+							type: "POST",
+							data: $(".remove-pessoa").serialize(),
+							success: function(data) {
+								swalWithBootstrapButtons.fire({
+									title: 'Sucesso',
+									text: 'Acesso removido com sucesso',
+									icon: 'success',
+									allowOutsideClick: false,
+									allowEscapeKey: false,
+								}).then(() => {
+									location.reload();
+								})
+							}
+						})
+					} else {
+						swalWithBootstrapButtons.fire({
+							title: 'Cancelado',
+							text: 'O acesso permanece no sistema',
+							icon: 'error',
+							allowOutsideClick: false,
+							allowEscapeKey: false,
+						})
+					}
+				})
+
+
+
+
+
 			})
 		});
 	</script>

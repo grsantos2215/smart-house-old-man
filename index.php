@@ -1,4 +1,8 @@
-<?php require_once("assets/php/functions.php") ?>
+<?php
+
+require_once("assets/php/functions.php")
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -65,18 +69,22 @@
 					</div>
 					<div class="col-md-4 my-2 col-sm-12">
 						<div class="border d-flex flex-column justify-content-between h-100 p-3 rounded-2 w-100">
-							<h5 class="fw-bold">Wi-Fi: LOREM IPSUM</h5>
+							<h5 class="fw-bold">Acessos ao sistema</h5>
 							<div class="d-flex my-2 justify-content-between">
-								<p class="m-0">Download</p>
+								<p class="m-0">Permitidos</p>
 								<div>
-									<p class="m-0 text-success">299.85 <span class="fw-bold">Mbps</span></p>
+									<p class="m-0 ">
+										<?php
+										$dir = scandir('assets/lib/face-api/labels/');
+										for ($i = 2; $i < count($dir); $i++) {
+										?>
+											<span><?= $dir[$i]; ?></span><span class="virgula">,</span>
+										<?php } ?>
+									</p>
 								</div>
 							</div>
-							<div class="d-flex my-2 justify-content-between">
-								<p class="m-0">Upload</p>
-								<div>
-									<p class="m-0 text-success">299.85 <span class="fw-bold">Mbps</span></p>
-								</div>
+							<div class="d-grid gap-2 mt-3">
+								<a href="gerenciamento.php" class="btn btn-primary d-block">Gerenciar</a>
 							</div>
 						</div>
 					</div>

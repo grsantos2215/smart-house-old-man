@@ -1,4 +1,9 @@
 const cam = document.getElementById('cam');
+let inputAcessos = document.getElementsByName('acessos[]');
+let inputArquivos,
+    arrArquivos,
+    obj = [];
+let arrAcessos = Array.from(inputAcessos);
 
 const startVideo = () => {
     navigator.mediaDevices.enumerateDevices().then((devices) => {
@@ -22,14 +27,25 @@ const startVideo = () => {
 };
 
 const loadLabels = () => {
-    const labels = ['Gabriel'];
+    const labels = [];
+    for (let i = 0; i < arrAcessos.length; i++) {
+        labels.push(arrAcessos[i].value);
+    }
+    console.log(labels);
     return Promise.all(
         labels.map(async (label) => {
+            inputArquivos = document.getElementsByName(`arquivos[${label}]`);
+            arrArquivos = Array.from(inputArquivos);
             const descriptions = [];
-            for (let i = 1; i <= 6; i++) {
-                const img = await faceapi.fetchImage(`assets/lib/face-api/labels/${label}/${i}.jpeg`);
-                const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
-                descriptions.push(detections.descriptor);
+            for (let i = 0; i < arrArquivos.length; i++) {
+                obj[i] = arrArquivos[i].value;
+                if (obj[i]) {
+                    const img = await faceapi.fetchImage(`assets/lib/face-api/labels/${label}/${obj[i]}`);
+                    const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
+                    descriptions.push(detections.descriptor);
+                } else {
+                    throw new Error('erro');
+                }
             }
             return new faceapi.LabeledFaceDescriptors(label, descriptions);
         })
@@ -69,5 +85,5 @@ cam.addEventListener('play', async () => {
             const { label, distance } = result;
             new faceapi.draw.DrawTextField([`${label} (${parseInt(distance * 100, 10)})`], box.bottomRight).draw(canvas);
         });
-    }, 100);
+    }, 10);
 });

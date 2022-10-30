@@ -1,7 +1,7 @@
 <?php
 require_once("assets/php/functions.php");
 
-$dir = base64_decode($_GET["pessoa"]);
+$dir = base64_decode($_GET["p"]);
 
 ?>
 
@@ -41,6 +41,7 @@ $dir = base64_decode($_GET["pessoa"]);
 								<h5 class="m-0 p-0 fw-bold"><?= $dir; ?></h5>
 							</div>
 							<div class="d-flex justify-content-end align-items-center">
+								<a href="gerenciamento.php" class="btn btn-outline-light me-2">Voltar para a página anterior</a>
 								<button class="btn btn-success btn-lg" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Adicionar Foto</button>
 							</div>
 						</div>
@@ -56,6 +57,12 @@ $dir = base64_decode($_GET["pessoa"]);
 						<div class="col-md-3 col-sm-6 my-2">
 							<div class="border d-flex flex-column align-items-center justify-content-center h-100 p-3 rounded-2 w-100">
 								<img src="<?= $diretorio . '/' . $dirName[$i] ?>" class="img-fluid">
+								<form class="remove-photo w-100">
+									<input type="hidden" name="foto-diretorio" value="<?= $dir . '/' . $dirName[$i] ?>">
+									<div class="d-grid gap-0 w-100 mt-3">
+										<button type="submit" class="btn btn-outline-danger">Remover foto</button>
+									</div>
+								</form>
 							</div>
 						</div>
 
@@ -92,12 +99,16 @@ $dir = base64_decode($_GET["pessoa"]);
 
 	<script>
 		$(function() {
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn m-1 btn-success',
+					cancelButton: 'btn m-1 btn-danger'
+				},
+				buttonsStyling: false
+			})
+
 			$("#adiciona-foto").on("change", (e) => {
 				var formData = new FormData($("#adiciona-foto")[0]);
-				console.log(formData);
-
-				// e.preventDefault();
-
 				$.ajax({
 					url: "assets/php/adiciona-foto.php",
 					type: "POST",
@@ -105,8 +116,60 @@ $dir = base64_decode($_GET["pessoa"]);
 					processData: false,
 					contentType: false,
 					success: function(data) {
-						location.reload();
+						swalWithBootstrapButtons.fire({
+							title: 'Sucesso',
+							text: 'Foto adicionada com sucesso',
+							icon: 'success',
+							allowOutsideClick: false,
+							allowEscapeKey: false,
+						}).then(() => {
+							location.reload();
+						})
+					}
+				})
+			})
 
+			$(".remove-photo").on("submit", (e) => {
+				e.preventDefault();
+
+				swalWithBootstrapButtons.fire({
+					title: "Tem Certeza?",
+					icon: "warning",
+					text: "Tem certeza que deseja excluir esta foto? Essa ação não terá recuperação",
+					allowOutsideClick: false,
+					allowEscapeKey: false,
+					showCancelButton: true,
+					reverseButtons: true,
+					confirmButtonText: 'Sim, Quero excluir',
+					cancelButtonText: 'Cancelar',
+				}).then((r) => {
+
+					if (r.isConfirmed) {
+						$.ajax({
+							url: "assets/php/remove-foto.php",
+							type: "POST",
+							data: $(".remove-photo").serialize(),
+							success: function(data) {
+
+								swalWithBootstrapButtons.fire({
+									title: 'Sucesso',
+									text: 'Foto removida com sucesso',
+									icon: 'success',
+									allowOutsideClick: false,
+									allowEscapeKey: false,
+								}).then(() => {
+									location.reload();
+								})
+							}
+						})
+					} else {
+						swalWithBootstrapButtons.fire({
+							title: 'Cancelado',
+							text: 'A foto permanece em segurança',
+							icon: 'error',
+							allowOutsideClick: false,
+							allowEscapeKey: false,
+						})
 					}
 				})
 			})
