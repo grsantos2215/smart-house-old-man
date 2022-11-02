@@ -99,6 +99,30 @@ $dir = base64_decode($_GET["p"]);
 
 	<script>
 		$(function() {
+			Promise.all([
+				faceapi.nets.tinyFaceDetector.loadFromUri('assets/lib/face-api/models'),
+				faceapi.nets.faceLandmark68Net.loadFromUri('assets/lib/face-api/models'),
+				faceapi.nets.faceRecognitionNet.loadFromUri('assets/lib/face-api/models'),
+				faceapi.nets.faceExpressionNet.loadFromUri('assets/lib/face-api/models'),
+				faceapi.nets.ageGenderNet.loadFromUri('assets/lib/face-api/models'),
+				faceapi.nets.ssdMobilenetv1.loadFromUri('assets/lib/face-api/models')
+			])
+
+			const loadAI = async (data) => {
+				const description = [];
+				if (data) {
+					const img = await faceapi.fetchImage(data);
+					const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
+
+					if (detections != null) {
+						description.push(detections.descriptor);
+						return Promise.all(description);
+					} else {
+						return 'erro';
+					}
+				}
+			}
+
 			const swalWithBootstrapButtons = Swal.mixin({
 				customClass: {
 					confirmButton: 'btn m-1 btn-success',
@@ -115,16 +139,43 @@ $dir = base64_decode($_GET["p"]);
 					data: formData,
 					processData: false,
 					contentType: false,
-					success: function(data) {
-						swalWithBootstrapButtons.fire({
-							title: 'Sucesso',
-							text: 'Foto adicionada com sucesso',
-							icon: 'success',
-							allowOutsideClick: false,
-							allowEscapeKey: false,
-						}).then(() => {
-							location.reload();
-						})
+					success: async function(data) {
+						const image = await loadAI(data);
+
+						if (image != 'erro') {
+							swalWithBootstrapButtons.fire({
+								title: 'Sucesso',
+								text: 'Foto adicionada com sucesso',
+								icon: 'success',
+								allowOutsideClick: false,
+								allowEscapeKey: false,
+							}).then(() => {
+								location.reload();
+							})
+						} else {
+							let path = data.split("/");
+							let arquivo = path[4] + '/' + path[5];
+
+							$.ajax({
+								url: "assets/php/remove-foto.php",
+								type: "POST",
+								data: {
+									'foto-diretorio': arquivo,
+								},
+								success: function(data) {
+
+									swalWithBootstrapButtons.fire({
+										title: 'Atenção',
+										text: 'A foto que foi enviada precisa conter o rosto da pessoa que irá ter acesso ao sistema',
+										icon: 'warning',
+										allowOutsideClick: false,
+										allowEscapeKey: false,
+									}).then(() => {
+										location.reload();
+									})
+								}
+							})
+						}
 					}
 				})
 			})

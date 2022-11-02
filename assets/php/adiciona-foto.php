@@ -25,4 +25,5 @@ if (!empty($_FILES)) {
 			}
 		}
 	}
+	echo "assets/lib/face-api/labels/$pessoa/" . $basename;
 }
