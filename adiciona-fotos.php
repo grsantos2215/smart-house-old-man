@@ -1,4 +1,15 @@
 <?php
+// A sessão precisa ser iniciada em cada página diferente
+if (!isset($_SESSION)) session_start();
+// Verifica se não há a variável da sessão que identifica o usuário
+if (!isset($_SESSION['UsuarioID'])) {
+	// Destrói a sessão por segurança
+	session_destroy();
+	// Redireciona o visitante de volta pro login
+	header("Location: login.php");
+	exit;
+}
+
 require_once("assets/php/functions.php");
 
 $dir = base64_decode($_GET["p"]);
@@ -58,9 +69,8 @@ $dir = base64_decode($_GET["p"]);
 							<div class="border d-flex flex-column align-items-center justify-content-center h-100 p-3 rounded-2 w-100">
 								<img src="<?= $diretorio . '/' . $dirName[$i] ?>" class="img-fluid">
 								<form class="remove-photo w-100">
-									<input type="hidden" name="foto-diretorio" value="<?= $dir . '/' . $dirName[$i] ?>">
 									<div class="d-grid gap-0 w-100 mt-3">
-										<button type="submit" class="btn btn-outline-danger">Remover foto</button>
+										<button type="submit" data-value="<?= $dir . '/' . $dirName[$i] ?>" class="remove-foto btn btn-outline-danger">Remover foto</button>
 									</div>
 								</form>
 							</div>
@@ -180,9 +190,9 @@ $dir = base64_decode($_GET["p"]);
 				})
 			})
 
-			$(".remove-photo").on("submit", (e) => {
+			$(".remove-foto").click((e) => {
 				e.preventDefault();
-
+				let foto = $(e.target).attr("data-value")
 				swalWithBootstrapButtons.fire({
 					title: "Tem Certeza?",
 					icon: "warning",
@@ -199,9 +209,10 @@ $dir = base64_decode($_GET["p"]);
 						$.ajax({
 							url: "assets/php/remove-foto.php",
 							type: "POST",
-							data: $(".remove-photo").serialize(),
+							data: {
+								'foto-diretorio': foto
+							},
 							success: function(data) {
-
 								swalWithBootstrapButtons.fire({
 									title: 'Sucesso',
 									text: 'Foto removida com sucesso',

@@ -1,4 +1,18 @@
-<?php require_once("assets/php/functions.php") ?>
+<?php
+// A sessão precisa ser iniciada em cada página diferente
+if (!isset($_SESSION)) session_start();
+// Verifica se não há a variável da sessão que identifica o usuário
+if (!isset($_SESSION['UsuarioID'])) {
+	// Destrói a sessão por segurança
+	session_destroy();
+	// Redireciona o visitante de volta pro login
+	header("Location: login.php");
+	exit;
+}
+
+require_once("assets/php/functions.php");
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -63,7 +77,7 @@
 					<div class="col-md-6 my-2 col-sm-12">
 						<div class="border d-flex flex-column justify-content-between h-100 p-3 rounded-2 w-100">
 							<div class="d-flex my-2 align-items-center justify-content-between">
-								<h5 class="fw-bold">Suite</h5>
+								<h5 class="fw-bold">Cozinha</h5>
 								<div>
 									<i class="fa-regular fa-lightbulb text-danger fa-2x" id="lampada_suite"></i>
 								</div>
@@ -72,22 +86,6 @@
 								<div class="d-grid gap-2 mt-3">
 									<input type="hidden" value="1" name="btLiga" id="btLiga-suite">
 									<button type="submit" class="btn btn-primary d-block" id="btn_submit-suite">Acender</button>
-								</div>
-							</form>
-						</div>
-					</div>
-					<div class="col-md-6 my-2 col-sm-12">
-						<div class="border d-flex flex-column justify-content-between h-100 p-3 rounded-2 w-100">
-							<div class="d-flex my-2 align-items-center justify-content-between">
-								<h5 class="fw-bold">Quarto</h5>
-								<div>
-									<i class="fa-regular fa-lightbulb text-danger fa-2x" id="lampada_quarto"></i>
-								</div>
-							</div>
-							<form id="submit-led-quarto">
-								<div class="d-grid gap-2 mt-3">
-									<input type="hidden" value="7" name="btLiga" id="btLiga-quarto">
-									<button type="submit" class="btn btn-primary d-block" id="btn_submit-quarto">Acender</button>
 								</div>
 							</form>
 						</div>
@@ -175,7 +173,6 @@
 							$("#lampada_sala").addClass("fa-regular text-danger");
 							$("#btn_submit-suite").html("Acender");
 						}
-
 					}
 				}
 			})

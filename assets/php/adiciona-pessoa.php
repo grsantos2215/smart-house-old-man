@@ -1,10 +1,13 @@
 <?php
 
+require_once("connection.php");
 
 if ($_POST) {
 	$nomePessoaPost = $_POST["nome_pessoa"];
 	$nomePessoa = str_replace(" ", "_", tirarAcentos($nomePessoaPost));
 	// echo $nomePessoa;
+
+	$nomePessoa_banco = strtolower($nomePessoa);
 
 	$tipo_conexao = $_SERVER['HTTP_HOST'];
 
@@ -19,6 +22,10 @@ if ($_POST) {
 		mkdir($pastaLocal);
 		umask($oldmask); //reset the old umask
 	}
+
+	$sql_insert = "INSERT INTO pessoa(primeiro_nome) VALUES ('$nomePessoa_banco')";
+	$result_insert = mysqli_query($conn, $sql_insert);
+	mysqli_close($conn);
 }
 
 function tirarAcentos($string)

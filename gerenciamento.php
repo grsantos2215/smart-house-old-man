@@ -1,4 +1,19 @@
-<?php require_once("assets/php/functions.php") ?>
+<?php
+// A sessão precisa ser iniciada em cada página diferente
+if (!isset($_SESSION)) session_start();
+// Verifica se não há a variável da sessão que identifica o usuário
+if (!isset($_SESSION['UsuarioID'])) {
+	// Destrói a sessão por segurança
+	session_destroy();
+	// Redireciona o visitante de volta pro login
+	header("Location: login.php");
+	exit;
+}
+
+require_once("assets/php/functions.php");
+
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -51,9 +66,8 @@
 								<div class="d-grid gap-2 w-100 mt-3">
 									<a class="btn btn-primary" href="adiciona-fotos.php?p=<?= base64_encode($dir[$i]) ?>">Visualizar</a>
 									<form class="remove-pessoa">
-										<input type="hidden" value="../lib/face-api/labels/<?= $dir[$i] ?>/" name="diretorio">
 										<div class="d-grid gap-0 w-100 mt-3">
-											<button type="submit" class="btn btn-outline-danger">Excluir acesso</button>
+											<button type="submit" data-value="../lib/face-api/labels/<?= $dir[$i] ?>/" class="remove-diretorio btn btn-outline-danger">Excluir acesso</button>
 										</div>
 									</form>
 								</div>
@@ -121,9 +135,9 @@
 				})
 			})
 
-			$(".remove-pessoa").on("submit", (e) => {
+			$(".remove-diretorio").click((e) => {
 				e.preventDefault();
-
+				let diretorio = $(e.target).attr("data-value")
 				swalWithBootstrapButtons.fire({
 					title: "Tem Certeza?",
 					icon: "warning",
@@ -136,11 +150,15 @@
 					cancelButtonText: 'Cancelar',
 				}).then((r) => {
 					if (r.isConfirmed) {
+						
 						$.ajax({
 							url: "assets/php/remove-pessoa.php",
 							type: "POST",
-							data: $(".remove-pessoa").serialize(),
+							data: {
+								diretorio: diretorio
+							},
 							success: function(data) {
+								console.log(data);
 								swalWithBootstrapButtons.fire({
 									title: 'Sucesso',
 									text: 'Acesso removido com sucesso',
@@ -162,11 +180,6 @@
 						})
 					}
 				})
-
-
-
-
-
 			})
 		});
 	</script>

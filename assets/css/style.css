@@ -12,6 +12,11 @@ canvas {
     position: absolute;
 }
 
+.btn-primary {
+    background: #6649b8 !important;
+    border-color: #6649b8 !important;
+}
+
 body {
     color: black !important;
     background-color: var(--bg-primary) !important;
@@ -23,12 +28,22 @@ body::-webkit-scrollbar {
     width: 0.25rem !important;
 }
 
-body::-webkit-scrollbar-track {
-    background: #1e1e24 !important;
+.row::-webkit-scrollbar {
+    height: 0.85rem;
+    width: 100% !important;
 }
 
-body::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-track,
+.row::-webkit-scrollbar-track {
+    background: #1e1e24 !important;
+    border-radius: 0.375rem;
+    width: 100% !important;
+}
+
+body::-webkit-scrollbar-thumb,
+.row::-webkit-scrollbar-thumb {
     background: #6649b8 !important;
+    border-radius: 0.375rem;
 }
 
 main {
@@ -287,4 +302,40 @@ main {
 
 .virgula:last-child {
     display: none;
+}
+
+@media (min-width: 1200px) {
+    .font-size-1 {
+        font-size: 4rem !important;
+    }
+}
+
+#card-clima-forecast .border > .row {
+    overflow-x: auto;
+    white-space: nowrap;
+    display: block;
+}
+
+.forecast:last-child {
+    border: none !important;
+}
+
+#teste video,
+canvas {
+    box-shadow: 4px 6px 20px 0px #00000040;
+    border-radius: 0.375rem;
+}
+
+.display-mobile {
+    display: none;
+}
+
+@media (max-width: 740px) {
+    .display-desktop {
+        display: none;
+    }
+}
+
+.height-alternative {
+    height: 250px;
 }
